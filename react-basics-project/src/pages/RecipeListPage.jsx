@@ -1,13 +1,40 @@
-import { Center, Heading } from '@chakra-ui/react';
-import { data } from '../utils/data';
+import { Flex } from "@chakra-ui/react";
+import { useState } from "react";
+import { data } from "../utils/data";
+import { RecipeCard } from "../components/RecipeCard";
+import { TextInput } from "../components/ui/TextInput";
 
-export const RecipeListPage = () => {
-  // You can play around with the console log, but ultimately remove it once you are done
-  console.log(data.hits[0].recipe.label);
+export const RecipeListPage = ({ clickFn }) => {
+  const [searchField, setSearchField] = useState("");
+
+  const changeFn = (event) => {
+    setSearchField(event.target.value);
+  };
+
+  const matchedRecipes = data.hits.filter((recipe) => {
+    return (
+      recipe.recipe.label.toLowerCase().includes(searchField.toLowerCase()) ||
+      recipe.recipe.healthLabels.some((healthLabel) => {
+        return healthLabel.toLowerCase().includes(searchField.toLowerCase());
+      })
+    );
+  });
 
   return (
-    <Center h="100vh" flexDir="column">
-      <Heading>Your Recipe App</Heading>
-    </Center>
+    <Flex flexDir="column" alignItems="center">
+      <TextInput changeFn={changeFn}></TextInput>
+      <Flex flexWrap="wrap" gap="2rem" justifyContent="center" m="1rem">
+        {matchedRecipes.map((recipeObject) => {
+          return (
+            <RecipeCard
+              key={recipeObject.recipe.label}
+              recipeObject={recipeObject}
+              clickFn={clickFn}
+            />
+          );
+        })}
+      </Flex>
+    </Flex>
   );
 };
+
