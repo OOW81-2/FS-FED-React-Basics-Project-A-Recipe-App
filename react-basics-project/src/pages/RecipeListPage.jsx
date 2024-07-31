@@ -21,20 +21,19 @@ export const RecipeListPage = ({ clickFn }) => {
   });
 
   return (
-    <Flex flexDir="column" alignItems="center">
-      <TextInput changeFn={changeFn}></TextInput>
-      <Flex flexWrap="wrap" gap="2rem" justifyContent="center" m="1rem">
-        {matchedRecipes.map((recipeObject) => {
-          return (
+    <>
+      <Flex flexDir="column" alignItems="center">
+        <TextInput changeFn={changeFn} />
+        <Flex flexWrap="wrap" gap="2rem" justifyContent="center" m="1rem">
+          {matchedRecipes.map((recipeObject) => (
             <RecipeCard
               key={recipeObject.recipe.label}
               recipeObject={recipeObject}
               clickFn={clickFn}
             />
-          );
-        })}
+          ))}
+        </Flex>
       </Flex>
-    </Flex>
+    </>
   );
 };
-
